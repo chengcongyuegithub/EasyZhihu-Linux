@@ -73,12 +73,18 @@
                                     </button>
                                 </div>
                                 <div th:if="${ls.get('liked')==-1}">
-                                <button class="down js-dislike" title="反对，不会显示你的姓名">
+                                <button class="down js-dislike press" title="反对，不会显示你的姓名">
                                     <i class="icon vote-arrow"></i>
                                     <span class="label sr-only">反对，不会显示你的姓名</span>
                                 </button>
                                 </div>
+                                <div th:if="${ls.get('liked')!=-1}">
+                                    <button class="down js-dislike" title="反对，不会显示你的姓名">
+                                        <i class="icon vote-arrow"></i>
+                                        <span class="label sr-only">反对，不会显示你的姓名</span>
+                                    </button>
 
+                                </div>
                             </div>
 
                             <div class="answer-head">

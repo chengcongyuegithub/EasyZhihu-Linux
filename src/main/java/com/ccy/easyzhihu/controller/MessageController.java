@@ -39,7 +39,7 @@ public class MessageController {
     @Autowired
     HostHolder hostHolder;
 
-    @RequestMapping(path = {"/msg/addMessage"},method = {RequestMethod.POST})
+    @RequestMapping(path = {"/msg/addMessage"},method = {RequestMethod.GET})
     @ResponseBody
     public String addMessage(@RequestParam("toName")String toName,@RequestParam("content")String content)
     {
@@ -70,7 +70,24 @@ public class MessageController {
     @RequestMapping(path = {"/msg/list"},method = {RequestMethod.GET})
     public String conversationDetail(Model model)
     {
-          return "letter";
+        if(hostHolder.getUser()==null)
+        {
+            return "redirect:/relogin";
+        }
+        int localUserId=hostHolder.getUser().getId();
+        List<Message> conversationList=messageService.getConversationList(localUserId,0,10);
+        List<VeiwObject> conversations=new ArrayList<VeiwObject>();
+        for(Message message:conversationList)
+        {
+            VeiwObject vo =new VeiwObject();
+            vo.set("message",message);
+            int targetId=message.getFromId()==localUserId?message.getToId():message.getFromId();
+            vo.set("user",userService.getUser(targetId));
+            vo.set("unread",messageService.getConversationUnreadCount(localUserId,message.getConversationId()));
+            conversations.add(vo);
+        }
+        model.addAttribute("conversations",conversations);
+        return "letter";
     }
 
     @RequestMapping(path = {"/msg/detail"},method = {RequestMethod.GET})
