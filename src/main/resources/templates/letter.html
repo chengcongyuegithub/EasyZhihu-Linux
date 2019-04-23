@@ -23,7 +23,8 @@
                         <span class="msg-num" th:text="${ls.get('unread')}">
                         </span>
                         <a class="list-head">
-                            <img alt="头像" th:src="${ls.get('user').getHeadUrl()}">
+                            <img alt="头像" th:src="${ls.get('user')!=null?
+                            ls.get('user').getHeadUrl():'http://images.nowcoder.com/head/706t.png'}">
                         </a>
                     </div>
                     <div class="letter-detail">

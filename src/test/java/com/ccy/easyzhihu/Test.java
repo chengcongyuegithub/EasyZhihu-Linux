@@ -1,5 +1,10 @@
 package com.ccy.easyzhihu;
 
+import com.ccy.easyzhihu.async.EventType;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author chengcongyue
  * @version 1.0
@@ -10,16 +15,10 @@ public class Test {
 
     public static void main(String[] args) {
 
-            int n = 12;
-            n |= n >>> 1;
-        System.out.println(n);
-            n |= n >>> 2;
-        System.out.println(n);
-            n |= n >>> 4;
-        System.out.println(n);
-            n |= n >>> 8;
-        System.out.println(n);
-            n |= n >>> 16;
-        System.out.println( (n < 0) ? 1 : (n >= 1<<30) ? 1<<30 : n + 1);
+        List<EventType> events = Arrays.asList(EventType.LIKE);
+        for(EventType event:events)
+        {
+            System.out.println(event);
+        }
     }
 }

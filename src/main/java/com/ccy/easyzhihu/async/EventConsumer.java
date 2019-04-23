@@ -10,12 +10,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Component
 public class EventConsumer implements InitializingBean,ApplicationContextAware{
 
     private static final Logger logger= LoggerFactory.getLogger(EventConsumer.class);

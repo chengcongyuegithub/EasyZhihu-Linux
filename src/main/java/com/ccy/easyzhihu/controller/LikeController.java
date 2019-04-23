@@ -2,6 +2,10 @@ package com.ccy.easyzhihu.controller;
 
 import com.ccy.easyzhihu.Service.CommentService;
 import com.ccy.easyzhihu.Service.LikeService;
+import com.ccy.easyzhihu.async.EventModel;
+import com.ccy.easyzhihu.async.EventProducer;
+import com.ccy.easyzhihu.async.EventType;
+import com.ccy.easyzhihu.model.Comment;
 import com.ccy.easyzhihu.model.EntityType;
 import com.ccy.easyzhihu.model.HostHolder;
 import com.ccy.easyzhihu.util.ZhiHuUtil;
@@ -21,7 +25,8 @@ public class LikeController {
     HostHolder hostHolder;
     @Autowired
     CommentService commentService;
-
+    @Autowired
+    EventProducer eventProducer;
     @RequestMapping(path ={"/like"},method = {RequestMethod.POST})
     @ResponseBody
     public String like(@RequestParam("commentId")int commentId)
@@ -30,6 +35,12 @@ public class LikeController {
        {
            return ZhiHuUtil.getObjectJson(999);
        }
+       Comment comment=commentService.getCommentById(commentId);
+       eventProducer.fireEvent(new EventModel(EventType.LIKE).setActorId(hostHolder.getUser().getId())
+       .setEntityId(commentId).setEntityId(EntityType.ENTITY_COMMENT).setEntityOwnerId(comment.getUserId())
+               .setExt("questionId",String.valueOf(comment.getEntityId()))
+       );
+
        long count=likeService.like(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT,commentId);
        return ZhiHuUtil.getJSONString(0,String.valueOf(count));
     }
