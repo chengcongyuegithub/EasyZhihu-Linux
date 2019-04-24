@@ -1,6 +1,9 @@
 package com.ccy.easyzhihu.controller;
 
 import com.ccy.easyzhihu.Service.UserService;
+import com.ccy.easyzhihu.async.EventModel;
+import com.ccy.easyzhihu.async.EventProducer;
+import com.ccy.easyzhihu.async.EventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +26,13 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger= LoggerFactory.getLogger(LoginController.class);
 
      @Autowired
      UserService userService;
 
-
+     @Autowired
+     EventProducer eventProducer;
      //登录
      @RequestMapping(path = {"/login/"},method = {RequestMethod.POST,RequestMethod.GET})
      public String login(Model model, @RequestParam("account") String username,
@@ -48,6 +52,12 @@ public class LoginController {
                     cookie.setMaxAge(3600*24*5);
                 }
                 response.addCookie(cookie);
+
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN).
+                        setExt("username",username).setExt("email","chengcongyue2@sohu.com")
+                        .setActorId((int)map.get("userId"))
+                );
+
                 if(!StringUtils.isEmpty(next))
                 {
                 return "redirect:"+next;
@@ -60,7 +70,8 @@ public class LoginController {
             }
          }catch (Exception e)
          {
-             logger.error("登录异常"+e.getMessage());
+             e.printStackTrace();
+             logger.error("登录异常 "+ e.getMessage());
              return "login";
          }
      }
