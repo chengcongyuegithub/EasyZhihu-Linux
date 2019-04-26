@@ -18,7 +18,7 @@ var oPopup = new Popup({
     Base.mix(Popup, Component, {
         zIndex: 100,
         _tpl: [
-            '<div class="modal-dialog absolute-position" style="margin:0;">',
+            '<div class="modal-dialog absolute-position" style="margin:0;padding:0;">',
                 '<div class="modal-dialog-title js-head">',
                     '<span class="modal-dialog-title-text js-title">#{title}</span>',
                     '<span class="modal-dialog-title-close js-close"></span>',
@@ -123,7 +123,7 @@ var oPopup = new Popup({
         var that = this;
         var oConf = that.rawConfig;
         if (!that.maskEl) {
-            that.maskEl = $('<div class="masklayer" style="z-index:' + (Popup.zIndex++) + '"></div>');
+            that.maskEl = $('<div class="masklayer" style="position:absolute;z-index:' + (Popup.zIndex++) + '"></div>');
             oConf.renderTo.append(that.maskEl);
         }
     }

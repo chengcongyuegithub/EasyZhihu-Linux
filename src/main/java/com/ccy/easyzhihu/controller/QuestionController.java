@@ -1,10 +1,6 @@
 package com.ccy.easyzhihu.controller;
 
-import com.ccy.easyzhihu.Dao.QuestionDAO;
-import com.ccy.easyzhihu.Service.CommentService;
-import com.ccy.easyzhihu.Service.LikeService;
-import com.ccy.easyzhihu.Service.QuestionService;
-import com.ccy.easyzhihu.Service.UserService;
+import com.ccy.easyzhihu.Service.*;
 import com.ccy.easyzhihu.model.*;
 import com.ccy.easyzhihu.util.ZhiHuUtil;
 import org.slf4j.Logger;
@@ -39,6 +35,8 @@ public class QuestionController {
     private UserService userService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private FollowService followService;
     @RequestMapping(path = {"/question/add"},method = RequestMethod.POST)
     @ResponseBody
     public String addQuestion(@RequestParam("title")String title,@RequestParam("content")String content)
@@ -89,6 +87,28 @@ public class QuestionController {
             vos.add(vo);
         }
         model.addAttribute("comments",vos);
+
+        List<VeiwObject> followUsers=new ArrayList<>();
+        List<Integer> users=followService.getFollowers(EntityType.ENTITY_QUESTION,Integer.parseInt(id),20);
+        for(Integer userId:users)
+        {
+            VeiwObject vo=new VeiwObject();
+            User u=userService.getUser(userId);
+            if(u==null)
+            {
+                continue;
+            }
+            vo.set("name",u.getName());
+            vo.set("headUrl",u.getHeadUrl());
+            vo.set("id",u.getId());
+        }
+        model.addAttribute("followUsers",followUsers);
+        if(hostHolder.getUser()!=null)
+        {
+            model.addAttribute("followed",followService.isFollower(hostHolder.getUser().getId(),
+                    EntityType.ENTITY_QUESTION,Integer.parseInt(id)));
+        }
+
         return "detail";
     }
 }

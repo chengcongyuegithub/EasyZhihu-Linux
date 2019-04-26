@@ -6,12 +6,12 @@ var oPopupAdd = new PopupAdd({
 });
  */
 (function (window) {
-    var PopupAdd = Base.createClass('main.component.PopupAdd');
+    var PopupMsg = Base.createClass('main.component.PopupMsg');
     var Popup = Base.getClass('main.component.Popup');
     var Component = Base.getClass('main.component.Component');
     var Util = Base.getClass('main.base.Util');
 
-    Base.mix(PopupAdd, Component, {
+    Base.mix(PopupMsg, Component, {
         _tpl: [
             '<div class="zh-add-question-form" style="margin:0;">',
                 '<div class="zg-section-big clearfix">',
@@ -54,7 +54,7 @@ var oPopupAdd = new PopupAdd({
 
     function fStaticShow(oConf) {
         var that = this;
-        var oAdd = new PopupAdd(oConf);
+        var oAdd = new PopupMsg(oConf);
         var bSubmit = false;
         var oPopup = new Popup({
             width: 540,
@@ -87,8 +87,11 @@ var oPopupAdd = new PopupAdd({
                     // 未登陆，跳转到登陆页面
                     if (oResult.code === 999) {
                         window.location.href = '/reglogin?next=' + window.encodeURIComponent(window.location.href);
+                    } else if (oResult.code !== 0) {
+                        that.error(oResult.msg || '出现错误，请重试');
                     } else {
-                        that.emit('ok');
+                        oConf.ok && oConf.ok.call(that);
+                        oAdd.emit('ok');
                     }
                 }).fail(function () {
                     alert('出现错误，请重试');
@@ -111,7 +114,7 @@ var oPopupAdd = new PopupAdd({
     function fInitialize(oConf) {
         var that = this;
         delete oConf.renderTo;
-        PopupAdd.superClass.initialize.apply(that, arguments);
+        PopupMsg.superClass.initialize.apply(that, arguments);
     }
 
     function fVal(oData) {

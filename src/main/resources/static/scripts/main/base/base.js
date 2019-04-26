@@ -34,7 +34,7 @@
         $(function () {
             oClass.initialize.call(oClass);
             // 绑定的事件
-            $.each(oClass.binds, function (sCbName, sEventName) {
+            $.each(oClass.binds, function (sEventName, sCbName) {
                 var aMatch = sEventName.match(/^(\S+)\s*(.*)$/);
                 var sEvent = aMatch[1];
                 var sSelector = aMatch[2];
@@ -48,7 +48,7 @@
                 });
             });
             // 代理的事件
-            $.each(oClass.events, function (sCbName, sEventName) {
+            $.each(oClass.events, function (sEventName, sCbName) {
                 var aMatch = sEventName.match(/^(\S+)\s*(.*)$/);
                 var sEvent = aMatch[1];
                 var sSelector = aMatch[2];

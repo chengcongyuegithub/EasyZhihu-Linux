@@ -1,16 +1,23 @@
 (function (window, undefined) {
-    var Action = Base.createClass('main.util.Action');
+    var Action = Base.getClass('main.util.Action');
+    var Business = Base.getClass('main.util.Business');
 
     Base.ready({
         initialize: fInitialize,
+        // 事件代理
         events: {
             'click .js-like': fVote,
-            'click .js-unlike': fVote
+            'click .js-dislike': fVote
         }
     });
 
     function fInitialize() {
         var that = this;
+        // 点击关注问题
+        Business.followQuestion({
+            countEl: $('.js-user-count'),
+            listEl: $('.js-user-list')
+        });
     }
 
     function fVote(oEvent) {
@@ -29,18 +36,19 @@
         Action[bLike ? 'like' : 'dislike']({
             commentId: sId,
             call: function (oResult) {
-                if (oResult.code === 999) {
-                    window.location.href = '/login';
-                    return;
-                }
                 // 调整样式
                 oDv.find('.pressed').removeClass('pressed');
-                oDv.find(bLike ? '.js-like' : '.js-unlike').addClass('pressed');
+                oDv.find(bLike ? '.js-like' : '.js-dislike').addClass('pressed');
                 // 更新数量
-                oDv.find('span.js-count').html(oResult.count);
+                oDv.closest('div.js-comment').find('span.js-voteCount').html(oResult.msg);
             },
             error: function (oResult) {
-                alert('出现错误，请重试');
+                if (oResult.code === 999) {
+                    alert('请登录后再操作');
+                    window.location.href = '/reglogin?next=' + window.decodeURIComponent(window.location.href);
+                } else {
+                    alert('出现错误，请重试');
+                }
             },
             always: function () {
                 that.isVote = false;

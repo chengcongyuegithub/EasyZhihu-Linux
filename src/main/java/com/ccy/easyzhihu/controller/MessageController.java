@@ -39,7 +39,7 @@ public class MessageController {
     @Autowired
     HostHolder hostHolder;
 
-    @RequestMapping(path = {"/msg/addMessage"},method = {RequestMethod.GET})
+    @RequestMapping(path = {"/msg/addMessage"},method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public String addMessage(@RequestParam("toName")String toName,@RequestParam("content")String content)
     {
@@ -101,21 +101,11 @@ public class MessageController {
                 VeiwObject vo=new VeiwObject();
                 vo.set("message",msg);
                 User user=userService.getUser(msg.getFromId());
-                if(user==null)
+              /*  if(user==null)
                 {
                     continue;
-                }
-                vo.set("fromUser",user);
-                if(user.getId()==hostHolder.getUser().getId())
-                {
-                    vo.set("otherUser",userService.getUser(msg.getToId()));
-                    vo.set("toUser",userService.getUser(msg.getToId()));
-                }else
-                {
-                    vo.set("otherUser",user);
-                    vo.set("toUser",hostHolder.getUser());
-                }
-
+                }*/
+                vo.set("user",user);
                 messages.add(vo);
             }
             model.addAttribute("messages",messages);

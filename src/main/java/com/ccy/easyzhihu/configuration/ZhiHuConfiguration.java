@@ -1,5 +1,6 @@
 package com.ccy.easyzhihu.configuration;
 
+import com.ccy.easyzhihu.interceptor.ConversationInterceptor;
 import com.ccy.easyzhihu.interceptor.LoginInterceptor;
 import com.ccy.easyzhihu.interceptor.PassportInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,14 @@ public class ZhiHuConfiguration extends WebMvcConfigurerAdapter {
     PassportInterceptor passportInterceptor;
     @Autowired
     LoginInterceptor loginInterceptor;
+    @Autowired
+    ConversationInterceptor conversationInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(passportInterceptor);
         registry.addInterceptor(loginInterceptor).addPathPatterns("/user/*");
+        registry.addInterceptor(conversationInterceptor).addPathPatterns("/msg/detail");
         super.addInterceptors(registry);
     }
 }

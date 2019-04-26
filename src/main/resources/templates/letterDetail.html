@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN" class="is-AppPromotionBarVisible cssanimations csstransforms csstransitions flexbox no-touchevents no-mobile">
+    <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>读《Web 全栈工程师的自我修养》 - web开发的愚人之旅 - 牛客网</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="keywords" content="读《Web 全栈工程师的自我修养》">
+    <meta name="description" content="阅读影浅分享的读《Web 全栈工程师的自我修养》，就在牛客网。">
+
+    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../styles/font-awesome.min.css">
+
+    <link rel="stylesheet" media="all" href="../styles/letter.css">
+
+    <script src="../scripts/hm.js"></script>
+    <script src="../scripts/detail.js"></script>
+
+    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery.qrcode.min.js"></script>
+</head>
+<body class="posts_show">
+    <div th:include="navigation::navigation" class="zu-top"></div>
+    <div id="main">
+        <div class="zg-wrap zu-main clearfix ">
+            <ul class="letter-chatlist">
+                <div th:each="msg:${messages}">
+                <li id="msg-item-4009580">
+                    <a class="list-head">
+                        <img alt="头像" th:src="${msg.get('user')!=null?msg.get('user').headUrl:'http://images.nowcoder.com/head/902t.png'}">
+                    </a>
+                    <div class="tooltip fade right in">
+                        <div class="tooltip-arrow"></div>
+                        <div class="tooltip-inner letter-chat clearfix">
+                            <div class="letter-info">
+                                <p class="letter-time"><span th:text="${msg.get('message').createdDate}"></span></p>
+                            </div>
+                            <p class="chat-content">
+                                <span th:text="${msg.get('message').content}"></span>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                </div>
+            </ul>
+        </div>
+
+    </div>
+    <div th:include="footer :: copyright"></div>
+</body>
+</html>

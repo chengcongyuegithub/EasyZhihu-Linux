@@ -1,6 +1,7 @@
 /**
 var oPopupAdd = new PopupAdd({
     data: 初始数据
+    ok: Function, 发布成功后的回调
 });
  */
 (function (window) {
@@ -81,7 +82,8 @@ var oPopupAdd = new PopupAdd({
                     if (oResult.code === 999) {
                         window.location.href = '/reglogin?next=' + window.encodeURIComponent(window.location.href);
                     } else {
-                        that.emit('ok');
+                        oConf.ok && oConf.ok.call(that);
+                        oAdd.emit('ok');
                     }
                 }).fail(function () {
                     alert('出现错误，请重试');
