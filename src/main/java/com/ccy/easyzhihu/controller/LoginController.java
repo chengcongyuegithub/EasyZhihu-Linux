@@ -97,7 +97,7 @@ public class LoginController {
          }
 
      }
-     @RequestMapping(path = {"/relogin"},method = {RequestMethod.GET,RequestMethod.POST})
+     @RequestMapping(path = {"/reglogin"},method = {RequestMethod.GET,RequestMethod.POST})
      public String login(@RequestParam(value="next",required = false) String next,Model model)
      {
          model.addAttribute("next",next);

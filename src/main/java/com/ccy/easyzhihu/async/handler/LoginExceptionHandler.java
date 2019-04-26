@@ -23,6 +23,7 @@ public class LoginExceptionHandler implements EventHandler{
     public void doHandler(EventModel model) {
         Map<String,Object> map=new HashMap<>();
         map.put("username",model.getExt("username"));
+        map.put("subject","login sucess");
         mailSender.sendWithHTMLTemplate(model.getExt("email"),"login has exception",
                 "mail/mail.html",map);
     }
