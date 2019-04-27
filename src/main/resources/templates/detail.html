@@ -8,7 +8,7 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-ZA-Response-Id" content="4b3ad1bf1e8045f1a016c31f5fbb40c8">
 
-<title>现在的微博里僵尸和水军泛滥，随便一个明星的粉丝力有八成都不是真粉丝。请问这些网络水军是怎么来的啊？ - 牛客</title>
+<title th:text="${question.title}"></title>
 
 <meta name="apple-itunes-app" content="app-id=432274380, app-argument=nowcoder://questions/36301524">
 
@@ -49,44 +49,32 @@
                 </div>
                 <div class="zm-side-section">
                     <div class="zm-side-section-inner" id="zh-question-side-header-wrap">
-                        <button class="js-follow-question follow-button zg-follow zg-btn-green " th:data-id="${question.id}">
-                            关注问题
-                        </button>
-                        <div class="zg-btn-white goog-inline-block goog-menu-button" id="zh-question-operation-menu" style="-webkit-user-select: none;">
-                            <div class="goog-inline-block goog-menu-button-outer-box">
-                                <div class="goog-inline-block goog-menu-button-inner-box">
-                                    <div class="goog-inline-block goog-menu-button-caption">
-                                        <i class="zg-icon-dropdown-menu zg-icon"></i>
-                                        <b class="hide-text">设置</b></div>
-                                    <div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div>
+                        <div th:switch="${followed}">
+                            <div th:case="false">
+                                <button class="js-follow-question follow-button zg-follow zg-btn-green " th:data-id="${question.id}">
+                                    关注问题
+                                </button>
+                            </div>
+                            <div th:case="true">
+                                <button class="follow-button zg-follow zg-btn-white js-follow-question" th:data-id="${question.id}"
+                                        data-status="1">
+                                    取消关注
+                                </button>
+
                             </div>
                         </div>
-
                         <div class="zh-question-followers-sidebar">
                             <div class="zg-gray-normal">
                                 <a href="">
-                                    <strong>9</strong>
+                                    <strong th:text="${followUsers.size()}" class="js-user-count"></strong>
                                 </a>人关注该问题
                             </div>
-                            <div class="list zu-small-avatar-list zg-clear">
-                                <span class="zm-item-link-avatar">
-                                    <img title="匿名用户" class="zm-item-img-avatar" src="../images/res/aadd7b895_s.jpg"></span>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/6ceea810748d179f57cac0baa5cf9592_s.jpg" class="zm-item-img-avatar"></a>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/19456ebfe8b207320735f282769ac635_s.jpg" class="zm-item-img-avatar"></a>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/11be4a90ed938abfbab4899df56ee754_s.png" class="zm-item-img-avatar"></a>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/d207854fffc9e0289fbd6bbbb3986988_s.jpg" class="zm-item-img-avatar"></a>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/1ac7840eeb19ada0bbf85f51702d5784_s.jpg" class="zm-item-img-avatar"></a>
-                                <a class="zm-item-link-avatar" href="">
-                                    <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
+                            <div class="list zu-small-avatar-list zg-clear js-user-list">
+                                <div th:each="followUser:${followUsers}">
+                                    <a th:class="@{'zm-item-link-avatar js-user-'+${followUser.get('id')}}"
+                                       th:href="@{'/user/'+${followUser.get('id')}}" th:data-original_title="${followUser.get('name')}">
+                                        <img th:src="${followUser.get('headUrl')}" class="zm-item-img-avatar"></a>
+                                </div>
                             </div>
                         </div>
                     </div>

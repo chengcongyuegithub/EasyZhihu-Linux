@@ -45,12 +45,12 @@ public class FollowController {
         }
         boolean ret = followService.follow(hostHolder.getUser().getId(),
                 EntityType.ENTITY_USER,userId);
-        eventProducer.fireEvent(new EventModel(EventType.FOLLOW).setActorId(hostHolder.getUser().getId()).setEntityId(EntityType.ENTITY_USER).setEntityId(userId));
+        eventProducer.fireEvent(new EventModel(EventType.FOLLOW).setActorId(hostHolder.getUser().getId()).setEntityType(EntityType.ENTITY_USER).setEntityId(userId).setEntityOwnerId(userId));
         return ZhiHuUtil.getJSONString(ret?0:1,String.valueOf(followService.getFolloweeCount(hostHolder.getUser().getId(),EntityType.ENTITY_USER)));
     }
 
 
-    @RequestMapping(path = {"/unfollowerUser"},method = {RequestMethod.POST})
+    @RequestMapping(path = {"/unfollowUser"},method = {RequestMethod.POST})
     @ResponseBody
     public String unfollowUser(@RequestParam("userId")int userId)
     {

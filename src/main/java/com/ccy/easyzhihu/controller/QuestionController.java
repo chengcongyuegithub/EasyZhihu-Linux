@@ -101,12 +101,16 @@ public class QuestionController {
             vo.set("name",u.getName());
             vo.set("headUrl",u.getHeadUrl());
             vo.set("id",u.getId());
+            followUsers.add(vo);
         }
         model.addAttribute("followUsers",followUsers);
         if(hostHolder.getUser()!=null)
         {
             model.addAttribute("followed",followService.isFollower(hostHolder.getUser().getId(),
                     EntityType.ENTITY_QUESTION,Integer.parseInt(id)));
+        }else
+        {
+            model.addAttribute("followed",false);
         }
 
         return "detail";

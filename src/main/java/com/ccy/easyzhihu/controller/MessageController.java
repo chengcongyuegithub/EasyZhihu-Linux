@@ -94,7 +94,7 @@ public class MessageController {
     public String conversationDetail(Model model,@Param("conversationId") String conversationId)
     {
         try {
-            List<Message> conversationList=messageService.getConversationDetail(conversationId,0,10);
+            List<Message> conversationList=messageService.getConversationDetail(conversationId,0,20);
             List<VeiwObject> messages=new ArrayList<>();
             for(Message msg:conversationList)
             {

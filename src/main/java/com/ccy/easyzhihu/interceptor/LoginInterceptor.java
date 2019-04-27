@@ -27,8 +27,7 @@ public class LoginInterceptor implements HandlerInterceptor{
         System.out.println(request.getRequestURI()+"!!!!");
         String str = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
         System.out.println(str+"!!!");
-        if(hostHolder.getUser()==null
-                ||!str.equals(String.valueOf(hostHolder.getUser().getId())))
+        if(hostHolder.getUser()==null)
         {
             response.sendRedirect("/reglogin?next="+request.getRequestURI());
             return false;

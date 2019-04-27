@@ -2,11 +2,12 @@ package com.ccy.easyzhihu.controller;
 
 import com.ccy.easyzhihu.Dao.QuestionDAO;
 import com.ccy.easyzhihu.Dao.UserDAO;
+import com.ccy.easyzhihu.Service.CommentService;
+import com.ccy.easyzhihu.Service.FollowService;
 import com.ccy.easyzhihu.Service.QuestionService;
 import com.ccy.easyzhihu.Service.UserService;
 import com.ccy.easyzhihu.aspect.LogAspect;
-import com.ccy.easyzhihu.model.Question;
-import com.ccy.easyzhihu.model.VeiwObject;
+import com.ccy.easyzhihu.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,12 @@ public class HomeController {
     private QuestionService questionService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private FollowService followService;
+    @Autowired
+    private HostHolder hostHolder;
 
     @RequestMapping(path={"/","index"},method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model)
@@ -47,6 +54,21 @@ public class HomeController {
     public String userIndex(Model model,@PathVariable("userId")int userId)
     {
         model.addAttribute("vos",getQuestions(userId,0,10));
+
+        User user=userService.getUser(userId);
+        VeiwObject vo=new VeiwObject();
+        vo.set("user",user);
+        vo.set("commentCount",commentService.getUserCommentCount(userId));
+        vo.set("followerCount",followService.getFollowerCount(EntityType.ENTITY_USER,userId));
+        vo.set("followeeCount",followService.getFolloweeCount(userId,EntityType.ENTITY_USER));
+        if(hostHolder.getUser()!=null)
+        {
+            vo.set("followed",followService.isFollower(hostHolder.getUser().getId(),EntityType.ENTITY_USER,userId));
+        }else
+        {
+            vo.set("followed",false);
+        }
+        model.addAttribute("profileUser",vo);
         return "profile";
     }
     private List<VeiwObject> getQuestions(int userId,int offset,int limit)

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"  lang="zh-CN" class="is-AppPromotionBarVisible cssanimations csstransforms csstransitions flexbox no-touchevents no-mobile">
+<head th:replace="header::common_header(~{::title})">
+    <title>用户首页</title>
+</head>
+<link rel="stylesheet" href="../../styles/result.css">
+<link rel="stylesheet" href="../../styles/detail.css">
+<body class="posts_show">
+<div th:include="navigation::navigation" class="zu-top"></div>
+<div id="main">
+    <div class="zg-wrap zu-main clearfix ">
+        <div class="zm-profile-section-wrap zm-profile-followee-page">
+            <div class="zm-profile-section-head">
+                    <span class="zm-profile-section-name">
+                        <a href="/people/zjuyxy"><span th:text="${curUser.getName()}"></span></a> 关注了
+                        <span th:text="${followerCount}"></span> 人
+                    </span>
+                <a class="zg-right zg-link-litblue-normal zm-profile-answer-page-return"
+                   th:href="@{'/user/'+${curUser.id}}">返回个人主页</a>
+            </div>
+            <div class="zm-profile-section-list">
+                <div id="zh-profile-follows-list">
+                    <div th:each="follower:${followers}">
+                        <div class="zh-general-list clearfix">
+                            <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
+                                <div class="zg-right">
+                                    <div th:switch="${follower.get('followed')}">
+                                        <div th:case="true">
+                                            <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
+                                        js-follow-user" data-status="1" th:data-id="${follower.get('user').id}">取消关注</button>
+                                        </div>
+                                        <div th:case="false">
+                                            <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
+                                         js-follow-user" th:data-id="${follower.get('user').id}">关注</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a th:title="${follower.get('user').name}" class="zm-item-link-avatar" >
+                                    <img th:src="${follower.get('user').headUrl}" class="zm-item-img-avatar">
+                                </a>
+                                <div class="zm-list-content-medium">
+                                    <div class="zg-big-gray" th:text="${follower.get('user').name}"></div>
+                                    <div class="details zg-gray">
+                                        <a target="_blank" th:href="@{'/user/'+${follower.get('user').id}+'/followers'}" class="zg-link-gray-normal">
+                                            <span th:text="${follower.get('followerCount')}"></span>粉丝
+                                        </a>
+                                        /
+                                        <a target="_blank" th:href="@{'/user/'+${follower.get('user').id}+'/followees'}" class="zg-link-gray-normal">
+                                            <span th:text="${follower.get('followeeCount')}"></span>关注
+                                        </a>
+                                        /
+                                        <a target="_blank" href="/people/buaabarty/answers" class="zg-link-gray-normal">
+                                            <span th:text="${follower.get('commentCount')}"></span>
+                                            回答</a>
+                                        /
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a aria-role="button" class="zg-btn-white zu-button-more">更多</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="footer :: copyright"></div>
+</body>
+</html>
