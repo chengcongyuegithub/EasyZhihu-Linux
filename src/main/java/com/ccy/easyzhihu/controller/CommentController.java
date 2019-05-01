@@ -3,6 +3,9 @@ package com.ccy.easyzhihu.controller;
 import com.ccy.easyzhihu.Service.CommentService;
 import com.ccy.easyzhihu.Service.QuestionService;
 import com.ccy.easyzhihu.Service.SensitiveService;
+import com.ccy.easyzhihu.async.EventModel;
+import com.ccy.easyzhihu.async.EventProducer;
+import com.ccy.easyzhihu.async.EventType;
 import com.ccy.easyzhihu.model.Comment;
 import com.ccy.easyzhihu.model.EntityType;
 import com.ccy.easyzhihu.model.HostHolder;
@@ -37,6 +40,8 @@ public class CommentController {
     SensitiveService sensitiveService;
     @Autowired
     QuestionService questionService;
+    @Autowired
+    EventProducer eventProducer;
     @RequestMapping(path={"/addComment"},method = {RequestMethod.POST})
     public String addComment(@RequestParam("questionId")int questionId,@RequestParam("content")String content)
     {
@@ -51,12 +56,16 @@ public class CommentController {
             {
                 comment.setUserId(ZhiHuUtil.ANONYMOUS_USERID);
             }
+            int userId = questionService.getQuestionById(""+questionId).getUserId();
             comment.setContent(content);
             comment.setEntityId(questionId);
             comment.setEntityType(EntityType.ENTITY_QUESTION);
             comment.setCreatedDate(new Date());
             comment.setStatus(0);
             commentService.addComment(comment);
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT)
+                    .setActorId(hostHolder.getUser().getId()).setEntityId(questionId)
+                    .setEntityType(EntityType.ENTITY_QUESTION).setEntityOwnerId(userId));
             int count = commentService.getCommmentCount(comment.getEntityId(), comment.getEntityType());
             questionService.updateCommentCount(comment.getEntityId(), count);
         }catch (Exception e)

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)#signin -->
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN" dropeffect="none" class="js is-AppPromotionBarVisible cssanimations csstransforms csstransitions flexbox no-touchevents no-mobile" style="">
+<head th:replace="header::common_header(~{::title})">
+    <title>news</title>
+</head>
+<body class="zhi">
+    <div th:include="navigation::navigation" class="zu-top"></div>
+    <div class="zg-wrap zu-main clearfix " role="main">
+        <div class="zu-main-content">
+            <div class="zu-main-content-inner">
+                <div class="zg-section" id="zh-home-list-title">
+                    <i class="zg-icon zg-icon-feedlist"></i>最新动态
+                    <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
+                        <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
+                            <i class="zg-icon zg-icon-settings"></i>设置
+                        </a>
+                    </span>
+                </div>
+                <div class="zu-main-feed-con navigable" data-feedtype="topstory" id="zh-question-list">
+                    <div id="js-home-feed-list" class="zh-general-list topstory clearfix">
+                        <div th:each="feed:${feeds}">
+                        <div th:switch="${feed.type}">
+                            <div th:case="1">
+                                <div class="feed-item-inner">
+                                    <div class="avatar">
+                                        <a th:title="${feed.getUserId()}" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/zhao-yong-feng">
+                                            <img th:src="${feed.get('userHead')}" class="zm-item-img-avatar">
+                                        </a>
+                                    </div>
+                                    <div class="feed-main">
+
+                                        <div class="feed-content" data-za-module="PostItem">
+
+                                            <div class="expandable entry-body">
+
+                                                <div class="zm-item-answer-author-info">
+                                                    <a class="author-link" data-tip="p$b$amuro1230" target="_blank"th:text="${feed.get('userName')}"></a>
+                                                    评论了该问题 </div>
+
+                                                <div class="zm-item-rich-text expandable js-collapse-body" data-resourceid="123114" data-action="/answer/content" data-author-name="李淼" data-entry-url="/question/19857995/answer/13174385">
+                                                    <div class="zh-summary summary clearfix" th:text="${feed.get('questionTitle')}"></div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="4">
+
+                                <div class="feed-item-inner">
+                                    <div class="avatar">
+                                        <a th:title="${feed.getUserId()}" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/zhao-yong-feng">
+                                            <img th:src="${feed.get('userHead')}" class="zm-item-img-avatar">
+                                        </a>
+                                    </div>
+                                    <div class="feed-main">
+
+                                        <div class="feed-content" data-za-module="PostItem">
+
+                                            <div class="expandable entry-body">
+
+                                                <div class="zm-item-answer-author-info">
+                                                    <a class="author-link" data-tip="p$b$amuro1230" target="_blank"th:text="${feed.get('userName')}"></a>
+                                                    关注了该问题 </div>
+
+                                                <div class="zm-item-rich-text expandable js-collapse-body" data-resourceid="123114" data-action="/answer/content" data-author-name="李淼" data-entry-url="/question/19857995/answer/13174385">
+                                                    <div class="zh-summary summary clearfix" th:text="${feed.get('questionTitle')}"></div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="feed-item folding feed-item-hook feed-item-1
+                        ">
+
+                        </div>
+                        </div>
+                    </div>
+                    <a href="javascript:;" id="zh-load-more" class="zg-btn-white zg-r3px zu-button-more">更多</a>
+                </div>
+            </div>
+        </div>
+        <div th:include="footer :: copyright"></div>
+    </div>
+</body>
+</html>
