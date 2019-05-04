@@ -1,6 +1,9 @@
 package com.ccy.easyzhihu.controller;
 
 import com.ccy.easyzhihu.Service.*;
+import com.ccy.easyzhihu.async.EventModel;
+import com.ccy.easyzhihu.async.EventProducer;
+import com.ccy.easyzhihu.async.EventType;
 import com.ccy.easyzhihu.model.*;
 import com.ccy.easyzhihu.util.ZhiHuUtil;
 import org.slf4j.Logger;
@@ -37,6 +40,8 @@ public class QuestionController {
     private LikeService likeService;
     @Autowired
     private FollowService followService;
+    @Autowired
+    private EventProducer eventProducer;
     @RequestMapping(path = {"/question/add"},method = RequestMethod.POST)
     @ResponseBody
     public String addQuestion(@RequestParam("title")String title,@RequestParam("content")String content)
@@ -55,6 +60,9 @@ public class QuestionController {
            }
            if(questionService.addQuestion(question)>0)
            {
+               eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION).
+               setActorId(question.getUserId()).setEntityId(question.getId()).setExt("title",question.getTitle())
+               .setExt("content",question.getContent()));
                return ZhiHuUtil.getObjectJson(0);
            }
         }catch (Exception e)
