@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)#signin -->
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN" dropeffect="none" class="js is-AppPromotionBarVisible cssanimations csstransforms csstransitions flexbox no-touchevents no-mobile" style="">
+<head th:replace="header::common_header(~{::title})">
+    <title>用户首页</title>
+</head>
+<body class="zhi">
+    <div th:include="navigation::navigation" class="zu-top"></div>
+    <div class="zg-wrap zu-main clearfix " role="main">
+        <div class="zu-main-content">
+            <div class="zu-main-content-inner">
+                <div class="zg-section" id="zh-home-list-title">
+                    <i class="zg-icon zg-icon-feedlist"></i>最新动态
+                    <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
+                        <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
+                            <i class="zg-icon zg-icon-settings"></i>设置
+                        </a>
+                    </span>
+                </div>
+                <div class="zu-main-feed-con navigable" data-feedtype="topstory" id="zh-question-list">
+                    <div id="js-home-feed-list" class="zh-general-list topstory clearfix">
+                        <div th:each="ls:${vos}">
+                        <div class="feed-item folding feed-item-hook feed-item-1
+                        ">
+                            <div class="feed-item-inner">
+                                <div class="avatar">
+                                    <a th:title="${ls.get('user')!=null?ls.get('user').name:'niming'}" class="zm-item-link-avatar" target="_blank" href="https://nowcoder.com/people/zhao-yong-feng">
+                                        <img th:src="${ls.get('user')!=null?ls.get('user').headUrl:'http://images.nowcoder.com/head/570t.png'}" class="zm-item-img-avatar">
+                                    </a>
+                                </div>
+                                <div class="feed-main">
+                                    <div class="feed-source" data-za-module="FeedSource">热门文章</div>
+                                    <div class="feed-content" data-za-module="PostItem">
+                                        <h2 class="feed-title">
+                                            <a target="_blank" class="post-link" th:href="@{'/question/'+${ls.get('question').id}}">
+                                                <span th:text="${ls.get('question').title}"></span>
+                                            </a>
+                                        </h2>
+                                        <div class="entry-body post-body js-collapse-body">
+                                            <div class="zm-item-vote">
+                                                <a class="zm-item-vote-count js-expand js-vote-count" href="#">1082</a>
+                                            </div>
+                                            <div class="zm-votebar">
+                                                <button class="up" title="赞同">
+                                                    <i class="icon vote-arrow"></i>
+                                                    <span class="count">1082</span>
+                                                    <span class="label sr-only">赞同</span>
+                                                </button>
+                                            </div>
+                                            <div class="author-info">
+                                                <a th:href="@{'/user/'+${ls.get('user')!=null?ls.get('user').id:'#'}}" class="name">
+                                                    <span th:text="${ls.get('user')!=null?ls.get('user').name:'niming'}"></span>
+                                                </a>
+                                            </div>
+                                            <div class="post-content">
+                                                <div class="zh-summary summary clearfix" th:text="${ls.get('question').content}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="feed-meta">
+                                            <div class="zm-item-meta answer-actions clearfix js-contentActions">
+                                                <div class="zm-meta-panel">
+                                                    <a data-follow="q:link" class="follow-link zg-follow meta-item" href="javascript:;" id="sfb-123114">
+                                                        <i class="z-icon-follow"></i>关注问题
+                                                    </a>
+                                                    <a href="#" name="addcomment" class="meta-item toggle-comment js-toggleCommentBox">
+                                                        <i class="z-icon-comment"></i>
+                                                        <span th:text="${ls.get('question').commentCount}"></span>
+                                                    </a>
+                                                    <a href="#" class="meta-item js-thank" data-thanked="false">
+                                                        <i class="z-icon-thank"></i>感谢
+                                                    </a>
+                                                    <button class="meta-item item-collapse js-collapse">
+                                                        <i class="z-icon-fold"></i>收起
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <a href="javascript:;" id="zh-load-more" class="zg-btn-white zg-r3px zu-button-more">更多</a>
+                </div>
+            </div>
+        </div>
+        <div th:include="footer :: copyright"></div>
+    </div>
+</body>
+</html>
